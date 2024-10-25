@@ -1,0 +1,107 @@
+# Cria uma estrutura de diretório para os três arquivos: index.html, styles.css, e script.js
+import os
+
+# Diretório para salvar os arquivos
+output_dir = '/mnt/data/site_princesa'
+
+# Certifica-se que o diretório existe
+os.makedirs(output_dir, exist_ok=True)
+
+# Cria o arquivo HTML (index.html)
+html_content = """
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urna de Aceitação</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Bem vinda, minha princesa!</h1>
+        <p>Você aceita ficar comigo pra sempre?</p>
+        <div class="buttons">
+            <button id="yesButton">SIM</button>
+            <button id="noButton">NÃO</button>
+        </div>
+        <p id="message" class="hidden">Eu te quero para sempre, minha Princesa Rapunzel</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+"""
+with open(os.path.join(output_dir, 'index.html'), 'w') as file:
+    file.write(html_content)
+
+# Cria o arquivo CSS (styles.css)
+css_content = """
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+}
+
+.container {
+    position: relative;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+#noButton {
+    transition: transform 0.5s;
+}
+
+.hidden {
+    display: none;
+}
+
+#message {
+    font-size: 24px;
+    color: #ff69b4;
+    margin-top: 20px;
+}
+"""
+with open(os.path.join(output_dir, 'styles.css'), 'w') as file:
+    file.write(css_content)
+
+# Cria o arquivo JavaScript (script.js)
+js_content = """
+const yesButton = document.getElementById("yesButton");
+const noButton = document.getElementById("noButton");
+const message = document.getElementById("message");
+
+noButton.addEventListener("click", () => {
+    // Move o botão "NÃO" para uma posição aleatória
+    const randomX = Math.random() * window.innerWidth - noButton.offsetWidth;
+    const randomY = Math.random() * window.innerHeight - noButton.offsetHeight;
+    noButton.style.transform = `translate(${randomX}px, ${randomY}px)`;
+});
+
+yesButton.addEventListener("click", () => {
+    // Exibe a mensagem quando o botão "SIM" é clicado
+    message.classList.remove("hidden");
+    yesButton.style.display = "none";  // Esconde o botão "SIM"
+    noButton.style.display = "none";   // Esconde o botão "NÃO"
+});
+"""
+with open(os.path.join(output_dir, 'script.js'), 'w') as file:
+    file.write(js_content)
+
+# Cria um arquivo ZIP com todos os arquivos
+import shutil
+shutil.make_archive(output_dir, 'zip', output_dir)
